@@ -10,110 +10,147 @@
         Foreground="White"
         WindowStartupLocation="CenterScreen">
 
-    <Grid Margin="20">
-        <!--  Define Resources Inside Grid -->
-        <Grid.Resources>
-            <Storyboard x:Key="PlaceholderFadeOut">
-                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                 Duration="0:0:0.3"
-                                 From="1.0" To="0.0"/>
-            </Storyboard>
-            <Storyboard x:Key="PlaceholderFadeIn">
-                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                 Duration="0:0:0.3"
-                                 From="0.0" To="1.0"/>
-            </Storyboard>
-        </Grid.Resources>
+    <Window.Resources>
+        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10"
+                          Opacity="0.5" ShadowDepth="5"/>
+    </Window.Resources>
+    
+    
+    <Border Background="#2B2B2B" CornerRadius="15" Padding="10"
+            Effect="{DynamicResource ShadowEffect}">
+        <Grid Margin="20">
+            <!--  Define Resources Inside Grid -->
+            <Grid.Resources>
+                <Storyboard x:Key="PlaceholderFadeOut">
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                               Duration="0:0:0.3"
+                               From="1.0" To="0.0"/>
+                </Storyboard>
+                <Storyboard x:Key="PlaceholderFadeIn">
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                               Duration="0:0:0.3"
+                               From="0.0" To="1.0"/>
+                </Storyboard>
 
-        <!--  Row Definitions to Fix Layout Issues -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <!-- Input Field -->
-            <RowDefinition Height="20"/>
-            <!-- Spacer -->
-            <RowDefinition Height="Auto"/>
-            <!-- Button -->
-            <RowDefinition Height="20"/>
-            <!-- Spacer -->
-            <RowDefinition Height="Auto"/>
-            <!-- Weather Icon & Details -->
-            <RowDefinition Height="20"/>
-            <!-- Spacer -->
-            <RowDefinition Height="*"/>
-            <!-- Forecast List (Expands) -->
-        </Grid.RowDefinitions>
+                <Style TargetType="Button">
+                    <Setter Property="Foreground" Value="white"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Background" Value="#4CAF50"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#45A049"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
 
-        <!--  Centered Input Field -->
-        <Grid Grid.Row="0" Width="220" HorizontalAlignment="Center">
-            <Border CornerRadius="10" BorderThickness="1" Background="White" BorderBrush="Gray">
-                <Grid Height="40">
-                    <!-- Placeholder Text -->
-                    <TextBlock x:Name="PlaceholderText"
-                               Text="Enter city name"
-                               Foreground="Gray"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Left"
-                               Margin="10,0,0,0"
-                               Opacity="1"
-                               IsHitTestVisible="False"/>
+                <Style TargetType="TextBox">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
 
-                    <!-- TextBox -->
-                    <TextBox x:Name="CityTextBox"
-                             VerticalContentAlignment="Center"
-                             TextChanged="CityTextBox_TextChanged"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Padding="10,0,0,0"/>
-                </Grid>
-            </Border>
+            <!--  Row Definitions to Fix Layout Issues -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Input Field -->
+                <RowDefinition Height="20"/>
+                <!-- Spacer -->
+                <RowDefinition Height="Auto"/>
+                <!-- Button -->
+                <RowDefinition Height="20"/>
+                <!-- Spacer -->
+                <RowDefinition Height="Auto"/>
+                <!-- Weather Icon & Details -->
+                <RowDefinition Height="20"/>
+                <!-- Spacer -->
+                <RowDefinition Height="*"/>
+                <!-- Forecast List (Expands) -->
+            </Grid.RowDefinitions>
+
+            <!--  Centered Input Field -->
+            <Grid Grid.Row="0" Width="250" HorizontalAlignment="Center">
+                <Border CornerRadius="10" BorderThickness="1" Background="White" BorderBrush="Gray">
+                    <Grid Height="40">
+                        <!-- Placeholder Text -->
+                        <TextBlock x:Name="PlaceholderText"
+                             Text="Enter city name"
+                             Foreground="Gray"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             Margin="15,0,0,0"
+                             Opacity="1"
+                             IsHitTestVisible="False"/>
+
+                        <!-- TextBox -->
+                        <TextBox x:Name="CityTextBox"
+                           VerticalContentAlignment="Center"
+                           TextChanged="CityTextBox_TextChanged"
+                           Background="Transparent"
+                           BorderThickness="0"
+                           Padding="10,0,0,0"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Centered Button -->
+            <Button Grid.Row="2"
+              Content="Get Weather"
+              Width="250"
+              Height="40"                
+              HorizontalAlignment="Center"
+              Click="GetWeather_Click"/>
+
+            <!--  Weather Icon & Output -->
+            <StackPanel Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image x:Name="WeatherIcon"
+                 Width="100"
+                 Height="100"
+                 Visibility="Collapsed"
+                 Margin="0,10,0,0"/>
+
+                <TextBlock x:Name="WeatherTextBlock"
+                     FontSize="16"
+                     TextAlignment="Center"
+                     Margin="10"
+                     TextWrapping="Wrap"
+                     FontWeight="Bold"/>
+            </StackPanel>
+
+            <!--  5-Day Forecast List (Now in its Own Grid Row) -->
+            <ListBox x:Name="ForecastListBox" Grid.Row="6"
+               Background="Transparent" Foreground="White"
+               BorderThickness="0" Height="250">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Image Width="40" Height="40"
+                             Source="{Binding IconUrl}" Margin="5"/>
+                            <TextBlock Text="{Binding FormattedDate}" FontSize="14" Width="100"/>
+                            <TextBlock Text="{Binding Temperature}" FontSize="14" Width="80"/>
+                            <TextBlock Text="{Binding Description}" FontSize="14" Width="150"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
         </Grid>
-
-        <!-- Centered Button -->
-        <Button Grid.Row="2"
-                Content="Get Weather"
-                Width="220"
-                Height="40"
-                Background="#4CAF50"
-                Foreground="White"
-                FontSize="14"
-                FontWeight="Bold"
-                Cursor="Hand"
-                BorderThickness="0"
-                HorizontalAlignment="Center"
-                Click="GetWeather_Click"/>
-
-        <!--  Weather Icon & Output -->
-        <StackPanel Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image x:Name="WeatherIcon"
-                   Width="100"
-                   Height="100"
-                   Visibility="Collapsed"
-                   Margin="0,10,0,0"/>
-
-            <TextBlock x:Name="WeatherTextBlock"
-                       FontSize="16"
-                       TextAlignment="Center"
-                       Margin="10"
-                       TextWrapping="Wrap"
-                       FontWeight="Bold"/>
-        </StackPanel>
-
-        <!--  5-Day Forecast List (Now in its Own Grid Row) -->
-        <ListBox x:Name="ForecastListBox" Grid.Row="6"
-                 Background="Transparent" Foreground="White"
-                 BorderThickness="0" Height="250">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <Image Width="40" Height="40"
-                               Source="{Binding IconUrl}" Margin="5"/>
-                        <TextBlock Text="{Binding FormattedDate}" FontSize="14" Width="100"/>
-                        <TextBlock Text="{Binding Temperature}" FontSize="14" Width="80"/>
-                        <TextBlock Text="{Binding Description}" FontSize="14" Width="150"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-    </Grid>
+    </Border>
+  
 </Window>
