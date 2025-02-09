@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using Weather_App.Models;
+using System.Media;
+using static System.Net.WebRequestMethods;
+
+
 
 namespace Weather_App.Services
 {
@@ -20,36 +24,82 @@ namespace Weather_App.Services
             _httpClient = new HttpClient();
         }
 
-        public async Task<WeatherResponse> GetWeatherAsync(string city)
+        public async Task<CityWeatherResponse> GetCityCoordinatesAsync(string city)
         {
             try
             {
-                // Debugging: Show the city being requested
-                MessageBox.Show($"Fetching weather for: {city}");
-
+       
                 string url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={_apiKey}&units=metric";
+
+                //  Debug: Print the full API request
+                Console.WriteLine("API Request: " + url); // Log the full request URL
+                MessageBox.Show("API Request: " + url);   // Show in a message box for testing
+
+                HttpResponseMessage response = await _httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();             
+                    CityWeatherResponse cityWeather = JsonConvert.DeserializeObject<CityWeatherResponse>(json);
+                    
+                    
+
+                    if (cityWeather == null)
+                    {
+                        SystemSounds.Hand.Play();
+                        throw new Exception("The response was empty or invalid.");
+                    }
+                    return cityWeather;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    SystemSounds.Hand.Play();
+                    throw new Exception("City not found. Please enter a valid city.");
+                }
+               else
+                {
+                    SystemSounds.Hand.Play();
+                    throw new Exception($"API Error: {response.StatusCode} - {response.ReasonPhrase}");
+                }
+            }
+            catch (HttpRequestException)
+            {
+                SystemSounds.Hand.Play();
+                throw new Exception("Network error. Please check your internet connection.");
+            }
+            catch (Exception ex)
+            {
+                SystemSounds.Hand.Play();
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<FiveDayForecastResponse> GetFiveDayForecastAsync(string city)
+        {
+            try
+            {
+                string url = $"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={_apiKey}&units=metric";
 
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string json = await response.Content.ReadAsStringAsync();
-
-                    // Debugging: Show raw JSON response
-                    MessageBox.Show($"API Response: {json}");
-
-                    WeatherResponse weather = JsonConvert.DeserializeObject<WeatherResponse>(json);
-                    return weather;
-                    
+                    FiveDayForecastResponse forecast = JsonConvert.DeserializeObject<FiveDayForecastResponse>(json);
+                    return forecast;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("City not found. Please enter a valid city.");
                 }
                 else
                 {
-                    throw new Exception($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                    throw new Exception($"API Error: {response.StatusCode} - {response.ReasonPhrase}");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to fetch weather data." + ex.Message);
+                throw new Exception("Failed to fetch weather forecast: " + ex.Message);
             }
         }
     }
