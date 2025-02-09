@@ -29,20 +29,4 @@ namespace Weather_App.Models
 
         public string FormattedDate => DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToShortDateString();
     }
-
-
-    //public class Temperature
-    //{
-    //    [JsonProperty("day")]
-    //    public double Day { get; set; }
-    //}
-
-    //public class WeatherInfo
-    //{
-    //    [JsonProperty("description")]
-    //    public string ?Description { get; set; }
-
-    //    [JsonProperty("icon")]
-    //    public string ?Icon { get; set; } 
-    //}
 }
