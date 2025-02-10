@@ -85,7 +85,7 @@
                         <!-- Placeholder Text -->
                         <TextBlock x:Name="PlaceholderText"
                              Text="Enter city name"
-                             Foreground="{DynamicResource WeatherTextColor}"
+                             Foreground="#222222"
                              VerticalAlignment="Center"
                              HorizontalAlignment="Left"
                              Margin="15,0,0,0"
@@ -141,7 +141,9 @@
             <!--  5-Day Forecast List (Now in its Own Grid Row) -->
             <ListBox x:Name="ForecastListBox" Grid.Row="6"
                Background="{DynamicResource ListBoxBackground}" Foreground="{DynamicResource ListBoxForeground}"
-               BorderThickness="0" Height="250">
+               BorderThickness="0" Height="250"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
