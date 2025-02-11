@@ -7,6 +7,7 @@
     <SolidColorBrush x:Key="ButtonColor" Color="#388E3C"/>
     <SolidColorBrush x:Key="ButtonForegroundColor" Color="White"/>
     <SolidColorBrush x:Key="BorderColor" Color="#555555"/>
+    <SolidColorBrush x:Key="WeatherTextBoxColor" Color="White"/>
 
     <!-- Weather Text Fix -->
     <SolidColorBrush x:Key="WeatherTextColor" Color="White"/>
