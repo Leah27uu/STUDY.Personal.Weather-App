@@ -25,10 +25,12 @@ namespace Weather_App
 
         private readonly WeatherService _weatherService;
         private bool isPlaceholderHidden = false; // Track placeholder state
+        private bool isDarkTheme = true;
         public MainWindow()
         {
             InitializeComponent();
             _weatherService = new WeatherService();
+            LoadSavedTheme();
 
         }
 
@@ -121,7 +123,37 @@ namespace Weather_App
                 WeatherTextBlock.Text = ex.Message;
                 SystemSounds.Hand.Play(); // Plays error sound
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            }                       
+        }
+
+        private void ToggleTheme_Click(object sender, RoutedEventArgs e)
+        {
+            isDarkTheme = !isDarkTheme;
+            ApplyTheme(); 
+        }
+
+        private void ApplyTheme()
+        {
+            ResourceDictionary theme = new ResourceDictionary();
+
+            if (isDarkTheme)
+                theme.Source = new Uri("Resources/DarkTheme.xaml", UriKind.Relative);
+            else
+                theme.Source = new Uri("Resources/Themes.xaml", UriKind.Relative);
+
+            // Apply new theme
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(theme);
+
+            Properties.Settings.Default.IsDarkMode = isDarkTheme;
+            Properties.Settings.Default.Save();
+
+        }
+
+        private void LoadSavedTheme()
+        {
+            isDarkTheme = Properties.Settings.Default.IsDarkMode;
+            ApplyTheme();
         }
     }
 }
