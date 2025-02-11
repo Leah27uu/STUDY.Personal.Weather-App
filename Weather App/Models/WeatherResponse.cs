@@ -8,34 +8,25 @@ using Newtonsoft.Json;
 namespace Weather_App.Models
 {
     public class WeatherResponse
-    {
-        [JsonProperty("name")]
-        public string City {  get; set; }
+    {    
+        [JsonProperty("timezone")]
+        public string ?Timezone { get; set; }
 
-        [JsonProperty("main")]
-        public MainData Main { get; set; }
+        [JsonProperty("daily")]
+        public DailyWeather[] ?Daily { get; set; }
+    }
+
+    public class DailyWeather
+    {
+        [JsonProperty("dt")]
+        public long DateUnix { get; set; }
+
+        [JsonProperty("temp")]
+        public Temperature Temp { get; set; }
 
         [JsonProperty("weather")]
-
         public WeatherInfo[] Weather { get; set; }
 
-
-
-    }
-
-    public class MainData
-    {
-        [JsonProperty("temp")]
-        public double Temperature { get; set; }
-
-        [JsonProperty("humidity")]
-        public int Humidity { get; set; }
-
-    }
-
-    public class WeatherInfo
-    {
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        public string FormattedDate => DateTimeOffset.FromUnixTimeSeconds(DateUnix).DateTime.ToShortDateString();
     }
 }
