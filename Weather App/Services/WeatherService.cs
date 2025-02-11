@@ -17,11 +17,13 @@ namespace Weather_App.Services
     public class WeatherService
     {
         private readonly HttpClient _httpClient;
-        private readonly String _apiKey = "c9911748e20197dbad0facee158b916f"; // Weather api key
+        private readonly String _apiKey; // Weather api key
+        
 
         public WeatherService()
         {
             _httpClient = new HttpClient();
+            _apiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY") ?? throw new Exception("API key not set in enviorment variables");
         }
 
         public async Task<CityWeatherResponse> GetCityCoordinatesAsync(string city)

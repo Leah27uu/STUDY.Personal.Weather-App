@@ -94,11 +94,12 @@
 
                         <!-- TextBox -->
                         <TextBox x:Name="CityTextBox"
-                           VerticalContentAlignment="Center"
-                           TextChanged="CityTextBox_TextChanged"
-                           Background="Transparent"
-                           BorderThickness="0"
-                           Padding="10,0,0,0"/>
+                                                            
+                                 VerticalContentAlignment="Center"
+                                 TextChanged="CityTextBox_TextChanged"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Padding="10,0,0,0"/> 
                     </Grid>
                 </Border>
             </Grid>

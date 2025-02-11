@@ -4,6 +4,7 @@
     <!-- Light Mode Colors -->
     <SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="ForegroundColor" Color="#222222"/>
+    <SolidColorBrush x:Key="WeatherTextBoxColor" Color="LightGray"/>
     <!-- Darker for readability -->
     <SolidColorBrush x:Key="ButtonColor" Color="#4CAF50"/>
     <SolidColorBrush x:Key="ButtonForegroundColor" Color="White"/>
