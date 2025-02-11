@@ -10,13 +10,8 @@
         Foreground="White"
         WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10"
-                          Opacity="0.5" ShadowDepth="5"/>
-    </Window.Resources>
-    
-    
-    <Border Background="#2B2B2B" CornerRadius="15" Padding="10"
+
+    <Border Background="{DynamicResource BackgroundColor}" CornerRadius="15" Padding="10"
             Effect="{DynamicResource ShadowEffect}">
         <Grid Margin="20">
             <!--  Define Resources Inside Grid -->
@@ -32,15 +27,13 @@
                                From="0.0" To="1.0"/>
                 </Storyboard>
 
-                <Style TargetType="Button">
-                    <Setter Property="Foreground" Value="white"/>
+                <Style TargetType="Button">                    
                     <Setter Property="FontWeight" Value="Bold"/>
                     <Setter Property="Padding" Value="10"/>
-                    <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="Background" Value="#4CAF50"/>
+                    <Setter Property="Cursor" Value="Hand"/>                   
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="FontSize" Value="14"/>
-                    <Setter Property="Template">
+                    <!--<Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}" CornerRadius="10">
@@ -48,12 +41,12 @@
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
+                    </Setter>-->
+                    <!--<Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#45A049"/>
                         </Trigger>
-                    </Style.Triggers>
+                    </Style.Triggers>-->
                 </Style>
 
                 <Style TargetType="TextBox">
@@ -74,7 +67,7 @@
                 <!-- Spacer -->
                 <RowDefinition Height="Auto"/>
                 <!-- Button -->
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
                 <!-- Spacer -->
                 <RowDefinition Height="Auto"/>
                 <!-- Weather Icon & Details -->
@@ -86,12 +79,13 @@
 
             <!--  Centered Input Field -->
             <Grid Grid.Row="0" Width="250" HorizontalAlignment="Center">
-                <Border CornerRadius="10" BorderThickness="1" Background="White" BorderBrush="Gray">
+                <Border CornerRadius="10" BorderBrush="{DynamicResource BorderColor}" Background="White" 
+                        Effect="{DynamicResource ShadowEffect}">
                     <Grid Height="40">
                         <!-- Placeholder Text -->
                         <TextBlock x:Name="PlaceholderText"
                              Text="Enter city name"
-                             Foreground="Gray"
+                             Foreground="#222222"
                              VerticalAlignment="Center"
                              HorizontalAlignment="Left"
                              Margin="15,0,0,0"
@@ -100,22 +94,33 @@
 
                         <!-- TextBox -->
                         <TextBox x:Name="CityTextBox"
-                           VerticalContentAlignment="Center"
-                           TextChanged="CityTextBox_TextChanged"
-                           Background="Transparent"
-                           BorderThickness="0"
-                           Padding="10,0,0,0"/>
+                                                            
+                                 VerticalContentAlignment="Center"
+                                 TextChanged="CityTextBox_TextChanged"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Padding="10,0,0,0"/> 
                     </Grid>
                 </Border>
             </Grid>
 
-            <!-- Centered Button -->
+            <!-- Get Weather Button -->
             <Button Grid.Row="2"
+              Style="{DynamicResource ButtonStyle}"
               Content="Get Weather"
               Width="250"
               Height="40"                
               HorizontalAlignment="Center"
               Click="GetWeather_Click"/>
+            
+            <!-- Toggle Theme Button -->
+            <Button Grid.Row="3" Content="Toggle Theme" Width="150" Height="40"
+                    Style="{DynamicResource ButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Click="ToggleTheme_Click"
+                    Effect="{DynamicResource ShadowEffect}">
+                
+            </Button>
 
             <!--  Weather Icon & Output -->
             <StackPanel Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -128,6 +133,7 @@
                 <TextBlock x:Name="WeatherTextBlock"
                      FontSize="16"
                      TextAlignment="Center"
+                     Foreground="{DynamicResource WeatherTextColor}"
                      Margin="10"
                      TextWrapping="Wrap"
                      FontWeight="Bold"/>
@@ -135,8 +141,10 @@
 
             <!--  5-Day Forecast List (Now in its Own Grid Row) -->
             <ListBox x:Name="ForecastListBox" Grid.Row="6"
-               Background="Transparent" Foreground="White"
-               BorderThickness="0" Height="250">
+               Background="{DynamicResource ListBoxBackground}" Foreground="{DynamicResource ListBoxForeground}"
+               BorderThickness="0" Height="250"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
